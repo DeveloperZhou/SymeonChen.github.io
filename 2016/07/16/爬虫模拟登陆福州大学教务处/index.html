@@ -1,0 +1,849 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,Spider," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Symeon Chen's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言自从教务处改版后，本想用微信公众号“西二在线”查成绩，结果发现其功能一直处在几乎不能用的状态，恰逢假期，学校服务器负担小，自己尝试用Python写了个爬虫模拟登陆福大教务处，爬下成绩等信息。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫模拟登陆福州大学教务处">
+<meta property="og:url" content="http://yoursite.com/2016/07/16/爬虫模拟登陆福州大学教务处/index.html">
+<meta property="og:site_name" content="Symeon Chen's Blog">
+<meta property="og:description" content="前言自从教务处改版后，本想用微信公众号“西二在线”查成绩，结果发现其功能一直处在几乎不能用的状态，恰逢假期，学校服务器负担小，自己尝试用Python写了个爬虫模拟登陆福大教务处，爬下成绩等信息。">
+<meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_screenshot.png">
+<meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_charles_capture.png">
+<meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_login_request.png">
+<meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_login_response.png">
+<meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_loginchk_request.png">
+<meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_loginchk_response.png">
+<meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_default_request.png">
+<meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_default_response.png">
+<meta property="og:updated_time" content="2016-07-16T13:36:27.929Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="爬虫模拟登陆福州大学教务处">
+<meta name="twitter:description" content="前言自从教务处改版后，本想用微信公众号“西二在线”查成绩，结果发现其功能一直处在几乎不能用的状态，恰逢假期，学校服务器负担小，自己尝试用Python写了个爬虫模拟登陆福大教务处，爬下成绩等信息。">
+<meta name="twitter:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_screenshot.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/16/爬虫模拟登陆福州大学教务处/"/>
+
+  <title> 爬虫模拟登陆福州大学教务处 | Symeon Chen's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Symeon Chen's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">日常开发记录</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                爬虫模拟登陆福州大学教务处
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-16T10:16:30+08:00" content="2016-07-16">
+              2016-07-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/经验总结/" itemprop="url" rel="index">
+                    <span itemprop="name">经验总结</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/16/爬虫模拟登陆福州大学教务处/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/16/爬虫模拟登陆福州大学教务处/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>自从教务处改版后，本想用微信公众号“西二在线”查成绩，结果发现其功能一直处在几乎不能用的状态，恰逢假期，学校服务器负担小，自己尝试用Python写了个爬虫模拟登陆福大教务处，爬下成绩等信息。<br><a id="more"></a></p>
+<h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_screenshot.png" alt=""><br>这是登陆成功的默认加载页面，在会话过期之前，可以从这个页面继续通过id访问其他所有信息，如成绩、课表、绩点等。</p>
+<h3 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h3><p>既然登陆成功了，想要获取什么信息都可以了。无非是Get的Url稍有不同。</p>
+<p><em>当然也可以用来爆破，不过效率低，也容易被发现。本文不进行此方面的研究讨论。</em></p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>模拟登陆，就是通过Python构造出与网页登陆相同的Request，再通过分析Response来获取我们想要的信息。</p>
+<p>Python用来写爬虫有着得天独厚的优势，特别是<a href="http://docs.python-requests.org/en/master/" target="_blank" rel="external">Requests</a>库，大大节约了我们的时间。在此附上Requests的一句话简介：</p>
+<blockquote>
+<p>Requests: HTTP for Humans</p>
+</blockquote>
+<p>如果有用Urllib、Urllib2写过爬虫，那么体会一定很深刻。</p>
+<h3 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h3><p>实验环境:</p>
+<ul>
+<li>抓包分析工具： Fiddler 或 Charles</li>
+<li>Python版本： Python3.X</li>
+</ul>
+<p>首先，我们要分析登陆的过程。</p>
+<p>使用Chrome打开<a href="http://jwch.fzu.edu.cn/" target="_blank" rel="external">福州大学教务处网站</a>，查看其源代码，找到输入账号密码的部分<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">name</span>=<span class="string">"loginform"</span> <span class="attr">id</span>=<span class="string">"loginform"</span> <span class="attr">method</span>=<span class="string">"post"</span> <span class="attr">action</span>=<span class="string">"http://59.77.226.32/logincheck.asp"</span> <span class="attr">onsubmit</span>=<span class="string">"return ew_ValidateForm(this);"</span> <span class="attr">_lpchecked</span>=<span class="string">"1"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">table</span> <span class="attr">align</span>=<span class="string">"center"</span> <span class="attr">width</span>=<span class="string">"100%"</span>&gt;</span><span class="tag">&lt;<span class="name">tbody</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span></div><div class="line">    用户名：<span class="tag">&lt;<span class="name">input</span> <span class="attr">class</span>=<span class="string">"minput"</span> <span class="attr">size</span>=<span class="string">"10"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"muser"</span> <span class="attr">name</span>=<span class="string">"muser"</span> <span class="attr">style</span>=<span class="string">"cursor: auto; background-image: url(&amp;quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGP6zwAAAgcBApocMXEAAAAASUVORK5CYII=&amp;quot;);"</span> <span class="attr">autocomplete</span>=<span class="string">"off"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">    密　码：<span class="tag">&lt;<span class="name">input</span> <span class="attr">class</span>=<span class="string">"minput"</span> <span class="attr">size</span>=<span class="string">"10"</span> <span class="attr">type</span>=<span class="string">"password"</span> <span class="attr">id</span>=<span class="string">"passwd"</span> <span class="attr">name</span>=<span class="string">"passwd"</span> <span class="attr">value</span>=<span class="string">""</span> <span class="attr">style</span>=<span class="string">"cursor: auto; background-image: url(&amp;quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGP6zwAAAgcBApocMXEAAAAASUVORK5CYII=&amp;quot;);"</span> <span class="attr">autocomplete</span>=<span class="string">"off"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">td</span> <span class="attr">align</span>=<span class="string">"right"</span>&gt;</span></div><div class="line">         <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"button"</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"image"</span> <span class="attr">src</span>=<span class="string">"/template/style/login/button1.gif"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span>   </div><div class="line">    <span class="tag">&lt;/<span class="name">td</span>&gt;</span>    </div><div class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">tbody</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>从源代码中我们可以看到，当点击“登陆”按钮时，会向<a href="http://59.77.226.32/logincheck.asp" target="_blank" rel="external">http://59.77.226.32/logincheck.asp</a> post一些数据。</p>
+<p>现在，我们再打开Charles或者Fiddler进行抓包，抓包工具的使用及设置不在此赘述。以Charles为例，在Chrome中设置代理之后访问并登陆福州大学教务处，可以抓到如下图所示的数据包</p>
+<p><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_charles_capture.png" alt=""></p>
+<p>我们查看logincheck.asp的Request如下</p>
+<p><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_login_request.png" alt=""></p>
+<p>muser部分的值为学号，passwd的值为密码，不太客气地说，明文传输实在不安全。但奇怪的是，从刚才的表单中我们可以看到，只填写了muser和passwd的值，但post的数据却包含了x和y，如果多次抓包还会发现这两个值是变化的。经实验发现，x和y的值不影响登陆过程，从<a href="http://stackoverflow.com/questions/801702/how-to-remove-x-and-y-on-submit-in-html-form-with-image-type-button" target="_blank" rel="external">stackoverflow</a>上查到，原来x和y值是鼠标点击button时的相对坐标，因为button的type是image，所以在submit的时候会带上这两个参数。</p>
+<p>Response如下</p>
+<p><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_login_response.png" alt=""></p>
+<p>我们可以看到，回传的状态码为302，而不是正常的200。</p>
+<p>到目前位置，用代码先实现如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">header_info = &#123;</div><div class="line">    <span class="string">'Cache-Control'</span>:<span class="string">'max-age=0'</span>,</div><div class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'</span>,</div><div class="line">    <span class="string">'Accept'</span>: <span class="string">'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'</span>,</div><div class="line">    <span class="string">'Origin'</span>: <span class="string">'http://jwch.fzu.edu.cn'</span>,</div><div class="line">    <span class="string">'Accept-Encoding'</span>: <span class="string">'gzip, deflate'</span>,</div><div class="line">    <span class="string">'Accept-Language'</span>: <span class="string">'zh-CN,zh;q=0.8,en;q=0.6'</span>,</div><div class="line">    <span class="string">'Connection'</span>: <span class="string">'keep-alive'</span>,</div><div class="line">    <span class="string">'Upgrade-Insecure-Requests'</span>: <span class="string">'1'</span>,</div><div class="line">    <span class="string">'Referer'</span>: <span class="string">'http://jwch.fzu.edu.cn/'</span>,</div><div class="line">    <span class="string">'Content-Type'</span>: <span class="string">'application/x-www-form-urlencoded'</span>,</div><div class="line">    &#125;</div><div class="line">login_form=&#123;</div><div class="line">    <span class="string">'muser'</span> : <span class="string">'学号'</span>,</div><div class="line">    <span class="string">'passwd'</span>: <span class="string">'密码'</span>,</div><div class="line">    <span class="string">'x'</span>     : <span class="string">'39'</span>,</div><div class="line">    <span class="string">'y'</span>     : <span class="string">'22'</span></div><div class="line">&#125;</div><div class="line">r = requests.post(<span class="string">'http://59.77.226.32/logincheck.asp'</span>,data = login_form,headers = header_info)</div><div class="line">print(r.text)</div></pre></td></tr></table></figure>
+<p>运行之后会发现，回传的页面是错误页面，抓包后会发现Response部分是正常的。这是怎么回事呢？上面提到，回传的状态码为302，而Python的Requests库会自动重定向，自然就重定向到了错误的页面。所以我们要将代码的post部分进行修改，添加一个参数allow_redirects。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">r = requests.post(<span class="string">'http://59.77.226.32/logincheck.asp'</span>,data = login_form,headers = header_info, allow_redirects = <span class="keyword">False</span>)</div></pre></td></tr></table></figure></p>
+<p>这样，就不会自动重定向了。</p>
+<p>现在，我们将从Response中解析出网址，从图中可以看到，所有获取的内容结构清晰，因此采用beautifulsoup来解析。需先安装BeautifulSoup4<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo pip3 install beautifulsoup4</div></pre></td></tr></table></figure></p>
+<p>然后用其来解析结构<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(r.text,<span class="string">"lxml"</span>)</div><div class="line">new_url = soup.body.a.get(<span class="string">"href"</span>)</div><div class="line">print(new_url)</div></pre></td></tr></table></figure></p>
+<p>就可以获得新的网址。</p>
+<p>同理，分析抓包获得的第二个数据包，<br><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_loginchk_request.png" alt=""><br>可以看到使用了get来获取信息，其Response一样是302状态码<br><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_loginchk_response.png" alt=""><br>因此，同理<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">new_r = requests.get(new_url,headers=header_info,allow_redirects=<span class="keyword">False</span>)</div><div class="line">new_soup = BeautifulSoup(new_r.text,<span class="string">"lxml"</span>)</div><div class="line">re_url = new_soup.body.a.get(<span class="string">"href"</span>)</div><div class="line">print(re_url)</div></pre></td></tr></table></figure></p>
+<p>Response中的default页面，就是成功登陆后的页面元素了。<br><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_default_request.png" alt=""><br><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_default_response.png" alt=""></p>
+<p>完整代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line"></div><div class="line">header_info = &#123;</div><div class="line">    <span class="string">'Cache-Control'</span>:<span class="string">'max-age=0'</span>,</div><div class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'</span>,</div><div class="line">    <span class="string">'Accept'</span>: <span class="string">'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'</span>,</div><div class="line">    <span class="string">'Origin'</span>: <span class="string">'http://jwch.fzu.edu.cn'</span>,</div><div class="line">    <span class="string">'Accept-Encoding'</span>: <span class="string">'gzip, deflate'</span>,</div><div class="line">    <span class="string">'Accept-Language'</span>: <span class="string">'zh-CN,zh;q=0.8,en;q=0.6'</span>,</div><div class="line">    <span class="string">'Connection'</span>: <span class="string">'keep-alive'</span>,</div><div class="line">    <span class="string">'Upgrade-Insecure-Requests'</span>: <span class="string">'1'</span>,</div><div class="line">    <span class="string">'Referer'</span>: <span class="string">'http://jwch.fzu.edu.cn/'</span>,</div><div class="line">    <span class="string">'Content-Type'</span>: <span class="string">'application/x-www-form-urlencoded'</span>,</div><div class="line">    &#125;</div><div class="line"></div><div class="line">login_form=&#123;</div><div class="line">    <span class="string">'muser'</span> : <span class="string">'学号'</span>,</div><div class="line">    <span class="string">'passwd'</span>: <span class="string">'密码'</span>,</div><div class="line">    <span class="string">'x'</span>     : <span class="string">'42'</span>,</div><div class="line">    <span class="string">'y'</span>     : <span class="string">'12'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">r = requests.post(<span class="string">'http://59.77.226.32/logincheck.asp'</span>,data = login_form,headers = header_info, allow_redirects = <span class="keyword">False</span>)</div><div class="line">soup = BeautifulSoup(r.text,<span class="string">"lxml"</span>)</div><div class="line">new_url = soup.body.a.get(<span class="string">"href"</span>)</div><div class="line"><span class="comment">#print(new_url)</span></div><div class="line">new_r = requests.get(new_url,headers=header_info,allow_redirects=<span class="keyword">False</span>)</div><div class="line">new_soup = BeautifulSoup(new_r.text,<span class="string">"lxml"</span>)</div><div class="line">re_url = new_soup.body.a.get(<span class="string">"href"</span>)</div><div class="line"><span class="comment">#print(re_url)</span></div><div class="line">re_r = requests.get(re_url,headers=header_info)</div><div class="line">print(re_r.text)</div></pre></td></tr></table></figure></p>
+<h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><p>如果输错密码，则发送get请求至loginchk.aspx的时候，即文中第二次回传302状态码时，不会回传302，而是200，可以此作为判断密码正误的条件。</p>
+<p>登陆之后如果请求成绩等页面，会发现回传的多是表格，用BeautifulSoup来解析就不太容易了。可以考虑与正则、lxml等混合使用。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+            <a href="/tags/Spider/" rel="tag">#Spider</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/14/获取鼠标坐标的小工具开发/" rel="next" title="获取鼠标坐标的小工具开发">
+                <i class="fa fa-chevron-left"></i> 获取鼠标坐标的小工具开发
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/16/爬虫模拟登陆福州大学教务处/"
+           data-title="爬虫模拟登陆福州大学教务处" data-url="http://yoursite.com/2016/07/16/爬虫模拟登陆福州大学教务处/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Symeon Chen" />
+          <p class="site-author-name" itemprop="name">Symeon Chen</p>
+          <p class="site-description motion-element" itemprop="description">一期一会，不如朝夕。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#效果图"><span class="nav-number">2.</span> <span class="nav-text">效果图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用途"><span class="nav-number">3.</span> <span class="nav-text">用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">4.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现方法"><span class="nav-number">5.</span> <span class="nav-text">实现方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拓展"><span class="nav-number">6.</span> <span class="nav-text">拓展</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Symeon Chen</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"symeonchen-github-io"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

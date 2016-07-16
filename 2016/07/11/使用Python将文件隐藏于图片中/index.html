@@ -74,6 +74,8 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="Symeon Chen's Blog" type="application/atom+xml" />
+
 
 
 
@@ -88,13 +90,13 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用Python将文件隐藏于图片中">
 <meta property="og:url" content="http://yoursite.com/2016/07/11/使用Python将文件隐藏于图片中/index.html">
-<meta property="og:site_name" content="SymeonChen's Blog">
+<meta property="og:site_name" content="Symeon Chen's Blog">
 <meta property="og:description" content="前言前些年网上曾流行过“图种”，将torrent文件隐藏在JPG图片之中，避开了对链接进行匹配的屏蔽。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。">
 <meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160711/before.jpg">
 <meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160711/screenshot_after_zip.png">
 <meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160711/before_binary_head_and_%20tail.png">
 <meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160711/zip_binary_head_and_%20tail.png">
-<meta property="og:updated_time" content="2016-07-14T09:25:43.258Z">
+<meta property="og:updated_time" content="2016-07-16T03:02:42.867Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Python将文件隐藏于图片中">
 <meta name="twitter:description" content="前言前些年网上曾流行过“图种”，将torrent文件隐藏在JPG图片之中，避开了对链接进行匹配的屏蔽。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。">
@@ -121,7 +123,7 @@
 
   <link rel="canonical" href="http://yoursite.com/2016/07/11/使用Python将文件隐藏于图片中/"/>
 
-  <title> 使用Python将文件隐藏于图片中 | SymeonChen's Blog </title>
+  <title> 使用Python将文件隐藏于图片中 | Symeon Chen's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -152,11 +154,11 @@
   <div class="custom-logo-site-title">
     <a href="/"  class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <span class="site-title">SymeonChen's Blog</span>
+      <span class="site-title">Symeon Chen's Blog</span>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
-  <p class="site-subtitle"></p>
+  <p class="site-subtitle">日常开发记录</p>
 </div>
 
 <div class="site-nav-toggle">
@@ -369,13 +371,13 @@
 <blockquote>
 <p>In computing, a polyglot is a computer program or script written in a valid form of multiple programming languages, which performs the same operations or output independent of the programming language used to compile or interpret it.</p>
 </blockquote>
-<h3 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h3><p>本文实验环境：</p>
-<ol>
-<li>linux操作系统（如deepin）</li>
-<li>python 2.7.x</li>
-<li>一张标准JPG图片（如before.JPG）</li>
-<li>一个txt文件（test.txt）</li>
-</ol>
+<h3 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h3><p>实验环境：</p>
+<ul>
+<li>Linux操作系统</li>
+<li>Python 2.x</li>
+<li>一张标准JPG图片（文中为before.JPG）</li>
+<li>一个txt文件（文中为test.txt）</li>
+</ul>
 <p>要实现这个功能，方法多种多样，甚至一行代码如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat test.zip &gt;&gt; before.JPG</div></pre></td></tr></table></figure></p>
 <p>都可以实现。但现在我们可以使用Python，进行更多的探索。</p>
 <p>步骤：</p>
@@ -498,12 +500,12 @@
                src="/images/avatar.gif"
                alt="Symeon Chen" />
           <p class="site-author-name" itemprop="name">Symeon Chen</p>
-          <p class="site-description motion-element" itemprop="description">Doing something right.</p>
+          <p class="site-description motion-element" itemprop="description">一期一会，不如朝夕。</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -520,7 +522,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -528,6 +530,13 @@
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
