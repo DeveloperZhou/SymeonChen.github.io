@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-07-16T13:36:27.929Z</updated>
+  <updated>2016-07-17T14:05:36.949Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,45 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>通过CloudFlare开启全站https</title>
+    <link href="http://yoursite.com/2016/07/17/%E9%80%9A%E8%BF%87CloudFlare%E5%BC%80%E5%90%AF%E5%85%A8%E7%AB%99https/"/>
+    <id>http://yoursite.com/2016/07/17/通过CloudFlare开启全站https/</id>
+    <published>2016-07-17T12:05:08.000Z</published>
+    <updated>2016-07-17T14:05:36.949Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本站托管于&lt;a href=&quot;https://pages.github.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Github Pages&lt;/a&gt;，使用&lt;a href=&quot;https://hexo.io/zh-cn/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;搭建而成，原本域名为symeonchen.github.io，有Github的SSL证书，但指向自定义域名后则使得证书的网址对应不上，变为HTTP访问。毕竟HTTPS是大势所趋，经过一番折腾，最终使用了CloudFlare作为代理，成功给全站开启了HTTPS。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;步骤&quot;&gt;&lt;a href=&quot;#步骤&quot; class=&quot;headerlink&quot; title=&quot;步骤&quot;&gt;&lt;/a&gt;步骤&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;购买域名&lt;/li&gt;
+&lt;li&gt;注册登陆&lt;a href=&quot;https://www.cloudflare.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CloudFlare&lt;/a&gt;，一步步设置，将域名服务商提供的DNS服务指向CloudFlare&lt;/li&gt;
+&lt;li&gt;进行配置，推荐在Page Rules中开启Always Use HTTPS，在Crypto中开启HSTS&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;域名symeonchen.com是在&lt;a href=&quot;https://sg.godaddy.com/zh/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GoDaddy&lt;/a&gt;买的，GoDaddy的DNS服务太慢，故原本托管于&lt;a href=&quot;https://www.dnspod.cn/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DNSPod&lt;/a&gt;。现在用了CloudFlare的服务，所以又将DNS从DNSPod挪到了CloudFlare。免费的plan已经够用，速度上也还不错，虽然在Github与CloudFlare之间的传输仍有不安全的因素，但CloudFlare与访问者之间已经成功使用了HTTPS。&lt;/p&gt;
+&lt;p&gt;域名提供商处，改为指向&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;hera.ns.cloudflare.com&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;与&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;jeff.ns.cloudflare.com&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这两处&lt;/p&gt;
+&lt;p&gt;然后在CloudFlare中设置DNS的CNAME，将www指向symeonchen.github.io。如果之前有在其他域名提供商处设置过Github Pages的自定义域名，那么CloudFlare会自动设置好CNAME与根目录的配置，十分人性化.&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本站托管于&lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt;，使用&lt;a href=&quot;https://hexo.io/zh-cn/&quot;&gt;Hexo&lt;/a&gt;搭建而成，原本域名为symeonchen.github.io，有Github的SSL证书，但指向自定义域名后则使得证书的网址对应不上，变为HTTP访问。毕竟HTTPS是大势所趋，经过一番折腾，最终使用了CloudFlare作为代理，成功给全站开启了HTTPS。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="学习记录" scheme="http://yoursite.com/categories/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="https" scheme="http://yoursite.com/tags/https/"/>
+    
+  </entry>
   
   <entry>
     <title>爬虫模拟登陆福州大学教务处</title>
@@ -82,14 +121,14 @@
     <link href="http://yoursite.com/2016/07/14/%E8%8E%B7%E5%8F%96%E9%BC%A0%E6%A0%87%E5%9D%90%E6%A0%87%E7%9A%84%E5%B0%8F%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/"/>
     <id>http://yoursite.com/2016/07/14/获取鼠标坐标的小工具开发/</id>
     <published>2016-07-14T07:52:31.000Z</published>
-    <updated>2016-07-16T03:02:46.583Z</updated>
+    <updated>2016-07-17T12:36:02.219Z</updated>
     
     <content type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;打算做一个自动化的工具，发现获取鼠标当前坐标的值有点麻烦，截图然后用Photoshop的标尺来查看太浪费时间了，于是写了个小工具用来获取坐标。用的是autopy这个库来实现功能，Tkinter来绘制界面。方便下一步进行其他的开发。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&quot;效果图&quot;&gt;&lt;a href=&quot;#效果图&quot; class=&quot;headerlink&quot; title=&quot;效果图&quot;&gt;&lt;/a&gt;效果图&lt;/h3&gt;&lt;p&gt;当我们按下&lt;strong&gt;Enter&lt;/strong&gt;或点击Print按钮的时候，如果上方输入框均为非空，就会将框内坐标打印到底下的文本框中，否则会打印当前鼠标顶点所在坐标。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://oa5cno1tg.bkt.clouddn.com//web/image/20160714/get_point_tool.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;用途&quot;&gt;&lt;a href=&quot;#用途&quot; class=&quot;headerlink&quot; title=&quot;用途&quot;&gt;&lt;/a&gt;用途&lt;/h3&gt;&lt;p&gt;可以快速记录下要使用的坐标为多少，方便之后进行自动化的处理。&lt;/p&gt;
 &lt;h3 id=&quot;原理&quot;&gt;&lt;a href=&quot;#原理&quot; class=&quot;headerlink&quot; title=&quot;原理&quot;&gt;&lt;/a&gt;原理&lt;/h3&gt;&lt;p&gt;autopy是一个轻量级的跨平台Python库，主要有模拟按键及鼠标、处理颜色及图像等功能。其图像部分并不如PIL那么广为人知，自动化方面也不如pywin32那么出名。但其用法简单且不受平台限制，用来模拟点击十分好用。&lt;/p&gt;
-&lt;p&gt;Tkinter是Python自带的GUI库，布局粗糙，界面朴素，但其跨平台稳定，所以用在这种小工具上再合适不过了。相比之下，PyQt虽然界面丰富，在这种唱井下就则略显臃肿了。&lt;/p&gt;
+&lt;p&gt;Tkinter是Python自带的GUI库，布局粗糙，界面朴素，但其跨平台稳定，所以用在这种小工具上再合适不过了。相比之下，PyQt虽然界面丰富，在这种场景下就则略显臃肿了。&lt;/p&gt;
 &lt;h3 id=&quot;实现方法&quot;&gt;&lt;a href=&quot;#实现方法&quot; class=&quot;headerlink&quot; title=&quot;实现方法&quot;&gt;&lt;/a&gt;实现方法&lt;/h3&gt;&lt;p&gt;实验环境：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Python 2.X&lt;/li&gt;

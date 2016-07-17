@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title><![CDATA[通过CloudFlare开启全站https]]></title>
+      <url>http://yoursite.com/2016/07/17/%E9%80%9A%E8%BF%87CloudFlare%E5%BC%80%E5%90%AF%E5%85%A8%E7%AB%99https/</url>
+      <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本站托管于<a href="https://pages.github.com/" target="_blank" rel="external">Github Pages</a>，使用<a href="https://hexo.io/zh-cn/" target="_blank" rel="external">Hexo</a>搭建而成，原本域名为symeonchen.github.io，有Github的SSL证书，但指向自定义域名后则使得证书的网址对应不上，变为HTTP访问。毕竟HTTPS是大势所趋，经过一番折腾，最终使用了CloudFlare作为代理，成功给全站开启了HTTPS。<br><a id="more"></a></p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li>购买域名</li>
+<li>注册登陆<a href="https://www.cloudflare.com/" target="_blank" rel="external">CloudFlare</a>，一步步设置，将域名服务商提供的DNS服务指向CloudFlare</li>
+<li>进行配置，推荐在Page Rules中开启Always Use HTTPS，在Crypto中开启HSTS</li>
+</ol>
+<p>域名symeonchen.com是在<a href="https://sg.godaddy.com/zh/" target="_blank" rel="external">GoDaddy</a>买的，GoDaddy的DNS服务太慢，故原本托管于<a href="https://www.dnspod.cn/" target="_blank" rel="external">DNSPod</a>。现在用了CloudFlare的服务，所以又将DNS从DNSPod挪到了CloudFlare。免费的plan已经够用，速度上也还不错，虽然在Github与CloudFlare之间的传输仍有不安全的因素，但CloudFlare与访问者之间已经成功使用了HTTPS。</p>
+<p>域名提供商处，改为指向</p>
+<blockquote>
+<p>hera.ns.cloudflare.com</p>
+</blockquote>
+<p>与</p>
+<blockquote>
+<p>jeff.ns.cloudflare.com</p>
+</blockquote>
+<p>这两处</p>
+<p>然后在CloudFlare中设置DNS的CNAME，将www指向symeonchen.github.io。如果之前有在其他域名提供商处设置过Github Pages的自定义域名，那么CloudFlare会自动设置好CNAME与根目录的配置，十分人性化.</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[爬虫模拟登陆福州大学教务处]]></title>
       <url>http://yoursite.com/2016/07/16/%E7%88%AC%E8%99%AB%E6%A8%A1%E6%8B%9F%E7%99%BB%E9%99%86%E7%A6%8F%E5%B7%9E%E5%A4%A7%E5%AD%A6%E6%95%99%E5%8A%A1%E5%A4%84/</url>
       <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>自从教务处改版后，本想用微信公众号“西二在线”查成绩，结果发现其功能一直处在几乎不能用的状态，恰逢假期，学校服务器负担小，自己尝试用Python写了个爬虫模拟登陆福大教务处，爬下成绩等信息。<br><a id="more"></a></p>
@@ -55,7 +78,7 @@
 <p><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160714/get_point_tool.png" alt=""></p>
 <h3 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h3><p>可以快速记录下要使用的坐标为多少，方便之后进行自动化的处理。</p>
 <h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>autopy是一个轻量级的跨平台Python库，主要有模拟按键及鼠标、处理颜色及图像等功能。其图像部分并不如PIL那么广为人知，自动化方面也不如pywin32那么出名。但其用法简单且不受平台限制，用来模拟点击十分好用。</p>
-<p>Tkinter是Python自带的GUI库，布局粗糙，界面朴素，但其跨平台稳定，所以用在这种小工具上再合适不过了。相比之下，PyQt虽然界面丰富，在这种唱井下就则略显臃肿了。</p>
+<p>Tkinter是Python自带的GUI库，布局粗糙，界面朴素，但其跨平台稳定，所以用在这种小工具上再合适不过了。相比之下，PyQt虽然界面丰富，在这种场景下就则略显臃肿了。</p>
 <h3 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h3><p>实验环境：</p>
 <ul>
 <li>Python 2.X</li>
