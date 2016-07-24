@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next mist use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -86,20 +86,20 @@
 
 
 
-<meta name="description" content="前言前些年网上曾流行过“图种”，将torrent文件隐藏在JPG图片之中，避开了对链接进行匹配的屏蔽。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。">
+<meta name="description" content="前言网上有很多用指令将文件隐藏在图片中的方法，这也可以用Python来实现,它避开了对链接或文本进行匹配的屏蔽方法。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用Python将文件隐藏于图片中">
 <meta property="og:url" content="http://yoursite.com/2016/07/11/使用Python将文件隐藏于图片中/index.html">
 <meta property="og:site_name" content="Symeon Chen's Blog">
-<meta property="og:description" content="前言前些年网上曾流行过“图种”，将torrent文件隐藏在JPG图片之中，避开了对链接进行匹配的屏蔽。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。">
+<meta property="og:description" content="前言网上有很多用指令将文件隐藏在图片中的方法，这也可以用Python来实现,它避开了对链接或文本进行匹配的屏蔽方法。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。">
 <meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160711/before.jpg">
 <meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160711/screenshot_after_zip.png">
 <meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160711/before_binary_head_and_%20tail.png">
 <meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160711/zip_binary_head_and_%20tail.png">
-<meta property="og:updated_time" content="2016-07-16T03:02:42.867Z">
+<meta property="og:updated_time" content="2016-07-19T13:54:09.229Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Python将文件隐藏于图片中">
-<meta name="twitter:description" content="前言前些年网上曾流行过“图种”，将torrent文件隐藏在JPG图片之中，避开了对链接进行匹配的屏蔽。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。">
+<meta name="twitter:description" content="前言网上有很多用指令将文件隐藏在图片中的方法，这也可以用Python来实现,它避开了对链接或文本进行匹配的屏蔽方法。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。">
 <meta name="twitter:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160711/before.jpg">
 
 
@@ -107,7 +107,7 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -350,6 +350,11 @@
           
 
           
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
         </div>
       </header>
     
@@ -361,7 +366,7 @@
       
 
       
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>前些年网上曾流行过“图种”，将torrent文件隐藏在JPG图片之中，避开了对链接进行匹配的屏蔽。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。<br><a id="more"></a></p>
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>网上有很多用指令将文件隐藏在图片中的方法，这也可以用Python来实现,它避开了对链接或文本进行匹配的屏蔽方法。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。<br><a id="more"></a></p>
 <h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p>将这张图右键保存，可以看到是一张后缀为JPG的图片</p>
 <p><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160711/before.jpg" alt=""></p>
 <p>但重命名为以zip为后缀的压缩包后，会得到其他的文件</p>
@@ -514,7 +519,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -531,7 +536,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -600,11 +605,27 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
         
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
 
         
       </div>
@@ -665,13 +686,6 @@
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
-
-
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>

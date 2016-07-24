@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-07-17T14:05:36.949Z</updated>
+  <updated>2016-07-24T09:03:15.089Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,51 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>神箭手爬虫试用体验</title>
+    <link href="http://yoursite.com/2016/07/24/%E7%A5%9E%E7%AE%AD%E6%89%8B%E7%88%AC%E8%99%AB%E8%AF%95%E7%94%A8%E4%BD%93%E9%AA%8C/"/>
+    <id>http://yoursite.com/2016/07/24/神箭手爬虫试用体验/</id>
+    <published>2016-07-24T08:15:37.000Z</published>
+    <updated>2016-07-24T09:03:15.089Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;在几个站上看到神箭手爬虫的广告，进去试着用了一下，上手比较容易，功能的拓展没有Python写起来那么舒服。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;步骤&quot;&gt;&lt;a href=&quot;#步骤&quot; class=&quot;headerlink&quot; title=&quot;步骤&quot;&gt;&lt;/a&gt;步骤&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;注册&lt;/li&gt;
+&lt;li&gt;在爬虫市场选择或自己开发一个爬虫&lt;/li&gt;
+&lt;li&gt;设置相关参数&lt;/li&gt;
+&lt;li&gt;测试后启动爬虫&lt;/li&gt;
+&lt;li&gt;导出数据&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;神箭手的爬虫是用JavaScript来编写的，内容的解析用的是XPath、正则、JsonPath。集成了IP代理、JS加载等功能，官方的文档比较详细，爬虫运行的流程图如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://doc.shenjianshou.cn/image/callbackFlowchart2.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;流程还是比较清晰的。爬虫的结构如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;24&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;25&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; configs = &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    domains: [&lt;span class=&quot;string&quot;&gt;&quot;xxx&quot;&lt;/span&gt;],&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    scanUrls: [&lt;span class=&quot;string&quot;&gt;&quot;xxxx&quot;&lt;/span&gt;],&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    contentUrlRegexes: [&lt;span class=&quot;string&quot;&gt;&quot;xxx&quot;&lt;/span&gt;],&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    helperUrlRegexes: [&lt;span class=&quot;string&quot;&gt;&quot;xxx&quot;&lt;/span&gt;],&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    fields: [&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            name: &lt;span class=&quot;string&quot;&gt;&quot;title&quot;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            selector: &lt;span class=&quot;string&quot;&gt;&#39;xxx&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            required: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            name: &lt;span class=&quot;string&quot;&gt;&quot;content&quot;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            selector: &lt;span class=&quot;string&quot;&gt;&#39;xxx&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          	repeated: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;      	&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          	name: &lt;span class=&quot;string&quot;&gt;&quot;article_author&quot;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          	selector: &lt;span class=&quot;string&quot;&gt;&#39;xxx&#39;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; crawler = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Crawler(configs);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;crawler.start();&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;在configs中定义了爬虫的参数，然后new一个Crawler对象来启动。&lt;/p&gt;
+&lt;p&gt;domains用于过滤不相关的网址，scanUrls是爬虫的入口页，contentUrlRegexes是内容页的正则过滤规则，helperUrlRegexes是列表页的正则过滤规则，fields中包含了内容页解析出来要保存的数据，selector默认是XPath规则，也可以指定成正则等，required表示该项不能为空，repeated表示该项不止一个。如果用XPath Helper来查看XPath过滤的元素的话，多个元素都会显示，但这里写的爬虫爬取的时候，只会爬满足条件的第一个，所以要指定repeated=true才行。&lt;/p&gt;
+&lt;p&gt;附一个今天早上写的Acfun文章区的爬虫：&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;24&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;25&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;26&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;27&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;28&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;29&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;30&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;31&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;32&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;33&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;34&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;35&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;36&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;37&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;38&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;39&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; configs = &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    domains: [&lt;span class=&quot;string&quot;&gt;&quot;www.acfun.tv&quot;&lt;/span&gt;],&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    scanUrls: [&lt;span class=&quot;string&quot;&gt;&quot;http://www.acfun.tv/v/list110/index_1.htm&quot;&lt;/span&gt;],&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    contentUrlRegexes: [&lt;span class=&quot;string&quot;&gt;&quot;http://www\\.acfun\\.tv/a/ac\\d&amp;#123;7&amp;#125;&quot;&lt;/span&gt;],&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    helperUrlRegexes: [&lt;span class=&quot;string&quot;&gt;&quot;http://www\\.acfun\\.tv/v/list110/index_\\d+\\.htm&quot;&lt;/span&gt;],&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    enableJS: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    fields: [&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            name: &lt;span class=&quot;string&quot;&gt;&quot;title&quot;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            selector: &lt;span class=&quot;string&quot;&gt;&#39;//*[@id=&quot;title_1&quot;]/span[2]&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            required: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            name: &lt;span class=&quot;string&quot;&gt;&quot;content&quot;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            selector: &lt;span class=&quot;string&quot;&gt;&#39;//*[contains(@id,&quot;area-player&quot;)]//p//text()&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          	required: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          	repeated: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;      	&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          	name: &lt;span class=&quot;string&quot;&gt;&quot;article_author&quot;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          	selector: &lt;span class=&quot;string&quot;&gt;&#39;//*[@id=&quot;block-info-bottom&quot;]/div[2]/div/span[1]/a/nobr&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          	required: &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;      	&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;      		name: &lt;span class=&quot;string&quot;&gt;&quot;article_view_count&quot;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          selector: &lt;span class=&quot;string&quot;&gt;&#39;//*[@id=&quot;txt-info-title_1&quot;]/span[1]&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        	required: &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;      	&amp;#125;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;      	&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          name: &lt;span class=&quot;string&quot;&gt;&quot;article_agree_count&quot;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          selector: &lt;span class=&quot;string&quot;&gt;&#39;//*[@id=&quot;txt-info-title_1&quot;]/span[5]&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        	required: &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; crawler = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Crawler(configs);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;crawler.start();&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;enableJS是因为阅读量与赞同量是js加载的。content部分用了//p//text()，因为一部分页面多套了一层div，一部分页面的内容夹杂在span与p里。&lt;/p&gt;
+&lt;p&gt;更多用法可以看官方的文档。&lt;/p&gt;
+&lt;h3 id=&quot;体验&quot;&gt;&lt;a href=&quot;#体验&quot; class=&quot;headerlink&quot; title=&quot;体验&quot;&gt;&lt;/a&gt;体验&lt;/h3&gt;&lt;p&gt;爬虫还是用Python来写更舒服。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;在几个站上看到神箭手爬虫的广告，进去试着用了一下，上手比较容易，功能的拓展没有Python写起来那么舒服。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="学习记录" scheme="http://yoursite.com/categories/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="regex" scheme="http://yoursite.com/tags/regex/"/>
+    
+      <category term="XPath" scheme="http://yoursite.com/tags/XPath/"/>
+    
+  </entry>
   
   <entry>
     <title>通过CloudFlare开启全站https</title>
@@ -160,9 +205,9 @@
     <link href="http://yoursite.com/2016/07/11/%E4%BD%BF%E7%94%A8Python%E5%B0%86%E6%96%87%E4%BB%B6%E9%9A%90%E8%97%8F%E4%BA%8E%E5%9B%BE%E7%89%87%E4%B8%AD/"/>
     <id>http://yoursite.com/2016/07/11/使用Python将文件隐藏于图片中/</id>
     <published>2016-07-11T09:34:21.000Z</published>
-    <updated>2016-07-16T03:02:42.867Z</updated>
+    <updated>2016-07-19T13:54:09.229Z</updated>
     
-    <content type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;前些年网上曾流行过“图种”，将torrent文件隐藏在JPG图片之中，避开了对链接进行匹配的屏蔽。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+    <content type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;网上有很多用指令将文件隐藏在图片中的方法，这也可以用Python来实现,它避开了对链接或文本进行匹配的屏蔽方法。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&quot;效果图&quot;&gt;&lt;a href=&quot;#效果图&quot; class=&quot;headerlink&quot; title=&quot;效果图&quot;&gt;&lt;/a&gt;效果图&lt;/h3&gt;&lt;p&gt;将这张图右键保存，可以看到是一张后缀为JPG的图片&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://oa5cno1tg.bkt.clouddn.com//web/image/20160711/before.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p&gt;但重命名为以zip为后缀的压缩包后，会得到其他的文件&lt;/p&gt;
@@ -210,7 +255,7 @@
     
     <summary type="html">
     
-      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;前些年网上曾流行过“图种”，将torrent文件隐藏在JPG图片之中，避开了对链接进行匹配的屏蔽。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。&lt;br&gt;
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;网上有很多用指令将文件隐藏在图片中的方法，这也可以用Python来实现,它避开了对链接或文本进行匹配的屏蔽方法。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。&lt;br&gt;
     
     </summary>
     
