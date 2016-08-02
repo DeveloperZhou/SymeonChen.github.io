@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-07-24T09:03:15.089Z</updated>
+  <updated>2016-08-02T12:26:43.376Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,54 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>搭建爬虫代理池</title>
+    <link href="http://yoursite.com/2016/08/02/%E6%90%AD%E5%BB%BA%E7%88%AC%E8%99%AB%E4%BB%A3%E7%90%86%E6%B1%A0/"/>
+    <id>http://yoursite.com/2016/08/02/搭建爬虫代理池/</id>
+    <published>2016-08-02T04:38:12.000Z</published>
+    <updated>2016-08-02T12:26:43.376Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;反爬虫的手段众多，最常见的是检查Header，其次是根据访问的频率封禁IP。网上可以找到许多提供代理的网站，但实际可用的IP甚少，购买收费接口也不是适合小型项目。因此，搭建一个自己的爬虫代理池是十分有必要的。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;效果图&quot;&gt;&lt;a href=&quot;#效果图&quot; class=&quot;headerlink&quot; title=&quot;效果图&quot;&gt;&lt;/a&gt;效果图&lt;/h3&gt;&lt;p&gt;程序运行示意图如下：&lt;br&gt;&lt;img src=&quot;http://oa5cno1tg.bkt.clouddn.com//web/image/20160802/spider_result_pic.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;数据库示意图如下：&lt;br&gt;&lt;img src=&quot;http://oa5cno1tg.bkt.clouddn.com//web/image/20160802/spider_result_db.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;要获取可用的代理IP，端口扫描效率太低，考虑到爬虫的日常需求量不大，从现有的代理网站爬下来最方便。实际测试过程中，发现网上的代理网站提供的IP可用率也很低，可能它们的检测规则是用百度等网站做靶子来查看返回值吧，然而这个办法并不准确，毕竟很多代理可能反代了百度等知名站点。&lt;/p&gt;
+&lt;p&gt;出于对HTTP_X_FORWARDED_FOR处理方法的不同，网络上代理的分类分成了透明代理和匿名代理，其中匿名代理又分普匿代理和高匿代理。既然是为了爬虫的隐蔽性，那么只能考虑高匿代理，并且自己做验证。&lt;/p&gt;
+&lt;h3 id=&quot;开发步骤&quot;&gt;&lt;a href=&quot;#开发步骤&quot; class=&quot;headerlink&quot; title=&quot;开发步骤&quot;&gt;&lt;/a&gt;开发步骤&lt;/h3&gt;&lt;p&gt;首先要找一些现有的代理网站，用Google可以搜出来一大堆。分析它们的特点，发现IP、port、protocol都是用表格显示的，自然而然想到用BeautifulSoup的find_all来筛选，再加上IP等数据的格式判定，就可以将所有网站的筛选规则统一，写成通用爬虫了。&lt;/p&gt;
+&lt;p&gt;爬下资料之后，要存入数据库，用了sqlite3，其实还是用了SQL的语法，所以最好再封装一下。&lt;/p&gt;
+&lt;p&gt;接下来就就是要验证IP的可用性了，这里采用 &lt;a href=&quot;http://httpbin.org/ip&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://httpbin.org/ip&lt;/a&gt; 作为判断依据，如果返回的url与代理相同，则判定该IP可用。&lt;/p&gt;
+&lt;p&gt;判定IP可用之后，再调用淘宝的接口，得到IP的地理位置，更新到数据库中。&lt;/p&gt;
+&lt;p&gt;完整代码放在我的Github&lt;a href=&quot;https://github.com/SymeonChen/spider-proxy-pool&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;（https://github.com/SymeonChen/spider-proxy-pool）&lt;/a&gt;上了。这里再贴一些关键的代码。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;判断IP是否可用，属于I/O密集型，所以采用多线程比较快，因此这里调用了multiprocessing.dummy。&lt;br&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; multiprocessing.dummy &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; Pool &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; ThreadPool&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;pool = ThreadPool(&lt;span class=&quot;number&quot;&gt;30&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;results = dboperation.selectAllAddress()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;pool.map(ipverify.checkAllAddress,results)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;pool.close()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;pool.join()&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;判断IP的格式是否正确，网上方法众多，这里调用ipaddress模块来完成检查，因此Python的版本必须大于3.3&lt;br&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; ipaddress&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ip_isvalid&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(address)&lt;/span&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        ipaddress.IPv4Address(address)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;True&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;except&lt;/span&gt; ipaddress.AddressValueError:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;False&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;存在的问题&quot;&gt;&lt;a href=&quot;#存在的问题&quot; class=&quot;headerlink&quot; title=&quot;存在的问题&quot;&gt;&lt;/a&gt;存在的问题&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;代理可用率低，如果需要超过100+代理，需要再增加爬取的网站。&lt;/li&gt;
+&lt;li&gt;未对外提供服务。可用IP虽有，如果做成API就更方便调用了。&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;反爬虫的手段众多，最常见的是检查Header，其次是根据访问的频率封禁IP。网上可以找到许多提供代理的网站，但实际可用的IP甚少，购买收费接口也不是适合小型项目。因此，搭建一个自己的爬虫代理池是十分有必要的。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="经验总结" scheme="http://yoursite.com/categories/%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+      <category term="Spider" scheme="http://yoursite.com/tags/Spider/"/>
+    
+  </entry>
+  
+  <entry>
     <title>神箭手爬虫试用体验</title>
     <link href="http://yoursite.com/2016/07/24/%E7%A5%9E%E7%AE%AD%E6%89%8B%E7%88%AC%E8%99%AB%E8%AF%95%E7%94%A8%E4%BD%93%E9%AA%8C/"/>
     <id>http://yoursite.com/2016/07/24/神箭手爬虫试用体验/</id>
     <published>2016-07-24T08:15:37.000Z</published>
-    <updated>2016-07-24T09:03:15.089Z</updated>
+    <updated>2016-08-02T04:40:12.813Z</updated>
     
     <content type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;在几个站上看到神箭手爬虫的广告，进去试着用了一下，上手比较容易，功能的拓展没有Python写起来那么舒服。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&quot;步骤&quot;&gt;&lt;a href=&quot;#步骤&quot; class=&quot;headerlink&quot; title=&quot;步骤&quot;&gt;&lt;/a&gt;步骤&lt;/h3&gt;&lt;ol&gt;
@@ -31,7 +74,7 @@
 &lt;li&gt;导出数据&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;神箭手的爬虫是用JavaScript来编写的，内容的解析用的是XPath、正则、JsonPath。集成了IP代理、JS加载等功能，官方的文档比较详细，爬虫运行的流程图如下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://doc.shenjianshou.cn/image/callbackFlowchart2.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://doc.shenjianshou.cn/image/imagecallbackFlowchart.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p&gt;流程还是比较清晰的。爬虫的结构如下：&lt;/p&gt;
 &lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;24&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;25&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; configs = &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    domains: [&lt;span class=&quot;string&quot;&gt;&quot;xxx&quot;&lt;/span&gt;],&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    scanUrls: [&lt;span class=&quot;string&quot;&gt;&quot;xxxx&quot;&lt;/span&gt;],&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    contentUrlRegexes: [&lt;span class=&quot;string&quot;&gt;&quot;xxx&quot;&lt;/span&gt;],&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    helperUrlRegexes: [&lt;span class=&quot;string&quot;&gt;&quot;xxx&quot;&lt;/span&gt;],&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    fields: [&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            name: &lt;span class=&quot;string&quot;&gt;&quot;title&quot;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            selector: &lt;span class=&quot;string&quot;&gt;&#39;xxx&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            required: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            name: &lt;span class=&quot;string&quot;&gt;&quot;content&quot;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            selector: &lt;span class=&quot;string&quot;&gt;&#39;xxx&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          	repeated: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;      	&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          	name: &lt;span class=&quot;string&quot;&gt;&quot;article_author&quot;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          	selector: &lt;span class=&quot;string&quot;&gt;&#39;xxx&#39;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; crawler = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Crawler(configs);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;crawler.start();&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;在configs中定义了爬虫的参数，然后new一个Crawler对象来启动。&lt;/p&gt;
@@ -65,7 +108,7 @@
     <link href="http://yoursite.com/2016/07/17/%E9%80%9A%E8%BF%87CloudFlare%E5%BC%80%E5%90%AF%E5%85%A8%E7%AB%99https/"/>
     <id>http://yoursite.com/2016/07/17/通过CloudFlare开启全站https/</id>
     <published>2016-07-17T12:05:08.000Z</published>
-    <updated>2016-07-17T14:05:36.949Z</updated>
+    <updated>2016-08-02T04:40:11.193Z</updated>
     
     <content type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本站托管于&lt;a href=&quot;https://pages.github.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Github Pages&lt;/a&gt;，使用&lt;a href=&quot;https://hexo.io/zh-cn/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;搭建而成，原本域名为symeonchen.github.io，有Github的SSL证书，但指向自定义域名后则使得证书的网址对应不上，变为HTTP访问。毕竟HTTPS是大势所趋，经过一番折腾，最终使用了CloudFlare作为代理，成功给全站开启了HTTPS。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&quot;步骤&quot;&gt;&lt;a href=&quot;#步骤&quot; class=&quot;headerlink&quot; title=&quot;步骤&quot;&gt;&lt;/a&gt;步骤&lt;/h3&gt;&lt;ol&gt;
@@ -97,6 +140,8 @@
     
       <category term="https" scheme="http://yoursite.com/tags/https/"/>
     
+      <category term="CloudFlare" scheme="http://yoursite.com/tags/CloudFlare/"/>
+    
   </entry>
   
   <entry>
@@ -104,7 +149,7 @@
     <link href="http://yoursite.com/2016/07/16/%E7%88%AC%E8%99%AB%E6%A8%A1%E6%8B%9F%E7%99%BB%E9%99%86%E7%A6%8F%E5%B7%9E%E5%A4%A7%E5%AD%A6%E6%95%99%E5%8A%A1%E5%A4%84/"/>
     <id>http://yoursite.com/2016/07/16/爬虫模拟登陆福州大学教务处/</id>
     <published>2016-07-16T02:16:30.000Z</published>
-    <updated>2016-07-16T13:36:27.929Z</updated>
+    <updated>2016-08-02T04:40:13.665Z</updated>
     
     <content type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;自从教务处改版后，本想用微信公众号“西二在线”查成绩，结果发现其功能一直处在几乎不能用的状态，恰逢假期，学校服务器负担小，自己尝试用Python写了个爬虫模拟登陆福大教务处，爬下成绩等信息。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&quot;效果图&quot;&gt;&lt;a href=&quot;#效果图&quot; class=&quot;headerlink&quot; title=&quot;效果图&quot;&gt;&lt;/a&gt;效果图&lt;/h3&gt;&lt;p&gt;&lt;img src=&quot;http://oa5cno1tg.bkt.clouddn.com//web/image/20160716/fzu_jwc_screenshot.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;这是登陆成功的默认加载页面，在会话过期之前，可以从这个页面继续通过id访问其他所有信息，如成绩、课表、绩点等。&lt;/p&gt;
@@ -166,7 +211,7 @@
     <link href="http://yoursite.com/2016/07/14/%E8%8E%B7%E5%8F%96%E9%BC%A0%E6%A0%87%E5%9D%90%E6%A0%87%E7%9A%84%E5%B0%8F%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/"/>
     <id>http://yoursite.com/2016/07/14/获取鼠标坐标的小工具开发/</id>
     <published>2016-07-14T07:52:31.000Z</published>
-    <updated>2016-07-17T12:36:02.219Z</updated>
+    <updated>2016-08-02T04:40:14.621Z</updated>
     
     <content type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;打算做一个自动化的工具，发现获取鼠标当前坐标的值有点麻烦，截图然后用Photoshop的标尺来查看太浪费时间了，于是写了个小工具用来获取坐标。用的是autopy这个库来实现功能，Tkinter来绘制界面。方便下一步进行其他的开发。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&quot;效果图&quot;&gt;&lt;a href=&quot;#效果图&quot; class=&quot;headerlink&quot; title=&quot;效果图&quot;&gt;&lt;/a&gt;效果图&lt;/h3&gt;&lt;p&gt;当我们按下&lt;strong&gt;Enter&lt;/strong&gt;或点击Print按钮的时候，如果上方输入框均为非空，就会将框内坐标打印到底下的文本框中，否则会打印当前鼠标顶点所在坐标。&lt;/p&gt;
@@ -205,7 +250,7 @@
     <link href="http://yoursite.com/2016/07/11/%E4%BD%BF%E7%94%A8Python%E5%B0%86%E6%96%87%E4%BB%B6%E9%9A%90%E8%97%8F%E4%BA%8E%E5%9B%BE%E7%89%87%E4%B8%AD/"/>
     <id>http://yoursite.com/2016/07/11/使用Python将文件隐藏于图片中/</id>
     <published>2016-07-11T09:34:21.000Z</published>
-    <updated>2016-07-19T13:54:09.229Z</updated>
+    <updated>2016-08-02T04:40:11.969Z</updated>
     
     <content type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;网上有很多用指令将文件隐藏在图片中的方法，这也可以用Python来实现,它避开了对链接或文本进行匹配的屏蔽方法。网上流传的多是rar格式，闲来试了试，zip也可以，查找了一些资料，将过程整理如下。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&quot;效果图&quot;&gt;&lt;a href=&quot;#效果图&quot; class=&quot;headerlink&quot; title=&quot;效果图&quot;&gt;&lt;/a&gt;效果图&lt;/h3&gt;&lt;p&gt;将这张图右键保存，可以看到是一张后缀为JPG的图片&lt;/p&gt;

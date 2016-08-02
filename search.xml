@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title><![CDATA[搭建爬虫代理池]]></title>
+      <url>http://yoursite.com/2016/08/02/%E6%90%AD%E5%BB%BA%E7%88%AC%E8%99%AB%E4%BB%A3%E7%90%86%E6%B1%A0/</url>
+      <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>反爬虫的手段众多，最常见的是检查Header，其次是根据访问的频率封禁IP。网上可以找到许多提供代理的网站，但实际可用的IP甚少，购买收费接口也不是适合小型项目。因此，搭建一个自己的爬虫代理池是十分有必要的。<br><a id="more"></a></p>
+<h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p>程序运行示意图如下：<br><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160802/spider_result_pic.png" alt=""></p>
+<p>数据库示意图如下：<br><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160802/spider_result_db.png" alt=""></p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>要获取可用的代理IP，端口扫描效率太低，考虑到爬虫的日常需求量不大，从现有的代理网站爬下来最方便。实际测试过程中，发现网上的代理网站提供的IP可用率也很低，可能它们的检测规则是用百度等网站做靶子来查看返回值吧，然而这个办法并不准确，毕竟很多代理可能反代了百度等知名站点。</p>
+<p>出于对HTTP_X_FORWARDED_FOR处理方法的不同，网络上代理的分类分成了透明代理和匿名代理，其中匿名代理又分普匿代理和高匿代理。既然是为了爬虫的隐蔽性，那么只能考虑高匿代理，并且自己做验证。</p>
+<h3 id="开发步骤"><a href="#开发步骤" class="headerlink" title="开发步骤"></a>开发步骤</h3><p>首先要找一些现有的代理网站，用Google可以搜出来一大堆。分析它们的特点，发现IP、port、protocol都是用表格显示的，自然而然想到用BeautifulSoup的find_all来筛选，再加上IP等数据的格式判定，就可以将所有网站的筛选规则统一，写成通用爬虫了。</p>
+<p>爬下资料之后，要存入数据库，用了sqlite3，其实还是用了SQL的语法，所以最好再封装一下。</p>
+<p>接下来就就是要验证IP的可用性了，这里采用 <a href="http://httpbin.org/ip" target="_blank" rel="external">http://httpbin.org/ip</a> 作为判断依据，如果返回的url与代理相同，则判定该IP可用。</p>
+<p>判定IP可用之后，再调用淘宝的接口，得到IP的地理位置，更新到数据库中。</p>
+<p>完整代码放在我的Github<a href="https://github.com/SymeonChen/spider-proxy-pool" target="_blank" rel="external">（https://github.com/SymeonChen/spider-proxy-pool）</a>上了。这里再贴一些关键的代码。</p>
+<hr>
+<p>判断IP是否可用，属于I/O密集型，所以采用多线程比较快，因此这里调用了multiprocessing.dummy。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> multiprocessing.dummy <span class="keyword">import</span> Pool <span class="keyword">as</span> ThreadPool</div><div class="line">pool = ThreadPool(<span class="number">30</span>)</div><div class="line"></div><div class="line">results = dboperation.selectAllAddress()</div><div class="line">pool.map(ipverify.checkAllAddress,results)</div><div class="line"></div><div class="line">pool.close()</div><div class="line">pool.join()</div></pre></td></tr></table></figure></p>
+<hr>
+<p>判断IP的格式是否正确，网上方法众多，这里调用ipaddress模块来完成检查，因此Python的版本必须大于3.3<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> ipaddress</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">ip_isvalid</span><span class="params">(address)</span>:</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        ipaddress.IPv4Address(address)</div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">    <span class="keyword">except</span> ipaddress.AddressValueError:</div><div class="line">        <span class="keyword">return</span> <span class="keyword">False</span></div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h3><ol>
+<li>代理可用率低，如果需要超过100+代理，需要再增加爬取的网站。</li>
+<li>未对外提供服务。可用IP虽有，如果做成API就更方便调用了。</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[神箭手爬虫试用体验]]></title>
       <url>http://yoursite.com/2016/07/24/%E7%A5%9E%E7%AE%AD%E6%89%8B%E7%88%AC%E8%99%AB%E8%AF%95%E7%94%A8%E4%BD%93%E9%AA%8C/</url>
       <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在几个站上看到神箭手爬虫的广告，进去试着用了一下，上手比较容易，功能的拓展没有Python写起来那么舒服。<br><a id="more"></a></p>
@@ -15,7 +40,7 @@
 <li>导出数据</li>
 </ol>
 <p>神箭手的爬虫是用JavaScript来编写的，内容的解析用的是XPath、正则、JsonPath。集成了IP代理、JS加载等功能，官方的文档比较详细，爬虫运行的流程图如下：</p>
-<p><img src="http://doc.shenjianshou.cn/image/callbackFlowchart2.png" alt=""></p>
+<p><img src="http://doc.shenjianshou.cn/image/imagecallbackFlowchart.jpg" alt=""></p>
 <p>流程还是比较清晰的。爬虫的结构如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> configs = &#123;</div><div class="line">    domains: [<span class="string">"xxx"</span>],</div><div class="line">    scanUrls: [<span class="string">"xxxx"</span>],</div><div class="line">    contentUrlRegexes: [<span class="string">"xxx"</span>],</div><div class="line">    helperUrlRegexes: [<span class="string">"xxx"</span>],</div><div class="line">    fields: [</div><div class="line">        &#123;</div><div class="line">            name: <span class="string">"title"</span>,</div><div class="line">            selector: <span class="string">'xxx'</span>,</div><div class="line">            required: <span class="literal">true</span></div><div class="line">        &#125;,</div><div class="line">        &#123;</div><div class="line">            name: <span class="string">"content"</span>,</div><div class="line">            selector: <span class="string">'xxx'</span>,</div><div class="line">          	repeated: <span class="literal">true</span></div><div class="line">        &#125;,</div><div class="line">      	&#123;</div><div class="line">          	name: <span class="string">"article_author"</span>,</div><div class="line">          	selector: <span class="string">'xxx'</span></div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> crawler = <span class="keyword">new</span> Crawler(configs);</div><div class="line">crawler.start();</div></pre></td></tr></table></figure>
 <p>在configs中定义了爬虫的参数，然后new一个Crawler对象来启动。</p>
