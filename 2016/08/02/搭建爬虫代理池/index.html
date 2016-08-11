@@ -94,7 +94,7 @@
 <meta property="og:description" content="前言反爬虫的手段众多，最常见的是检查Header，其次是根据访问的频率封禁IP。网上可以找到许多提供代理的网站，但实际可用的IP甚少，购买收费接口也不是适合小型项目。因此，搭建一个自己的爬虫代理池是十分有必要的。">
 <meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160802/spider_result_pic.png">
 <meta property="og:image" content="http://oa5cno1tg.bkt.clouddn.com//web/image/20160802/spider_result_db.png">
-<meta property="og:updated_time" content="2016-08-02T12:26:43.376Z">
+<meta property="og:updated_time" content="2016-08-07T09:01:16.394Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建爬虫代理池">
 <meta name="twitter:description" content="前言反爬虫的手段众多，最常见的是检查Header，其次是根据访问的频率封禁IP。网上可以找到许多提供代理的网站，但实际可用的IP甚少，购买收费接口也不是适合小型项目。因此，搭建一个自己的爬虫代理池是十分有必要的。">
@@ -363,7 +363,7 @@
 <h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p>程序运行示意图如下：<br><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160802/spider_result_pic.png" alt=""></p>
 <p>数据库示意图如下：<br><img src="http://oa5cno1tg.bkt.clouddn.com//web/image/20160802/spider_result_db.png" alt=""></p>
 <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>要获取可用的代理IP，端口扫描效率太低，考虑到爬虫的日常需求量不大，从现有的代理网站爬下来最方便。实际测试过程中，发现网上的代理网站提供的IP可用率也很低，可能它们的检测规则是用百度等网站做靶子来查看返回值吧，然而这个办法并不准确，毕竟很多代理可能反代了百度等知名站点。</p>
-<p>出于对HTTP_X_FORWARDED_FOR处理方法的不同，网络上代理的分类分成了透明代理和匿名代理，其中匿名代理又分普匿代理和高匿代理。既然是为了爬虫的隐蔽性，那么只能考虑高匿代理，并且自己做验证。</p>
+<p>出于对X_FORWARDED_FOR处理方法的不同，网络上代理的分类分成了透明代理和匿名代理，其中匿名代理又分普匿代理和高匿代理。既然是为了爬虫的隐蔽性，那么只能考虑高匿代理，并且自己做验证。</p>
 <h3 id="开发步骤"><a href="#开发步骤" class="headerlink" title="开发步骤"></a>开发步骤</h3><p>首先要找一些现有的代理网站，用Google可以搜出来一大堆。分析它们的特点，发现IP、port、protocol都是用表格显示的，自然而然想到用BeautifulSoup的find_all来筛选，再加上IP等数据的格式判定，就可以将所有网站的筛选规则统一，写成通用爬虫了。</p>
 <p>爬下资料之后，要存入数据库，用了sqlite3，其实还是用了SQL的语法，所以最好再封装一下。</p>
 <p>接下来就就是要验证IP的可用性了，这里采用 <a href="http://httpbin.org/ip" target="_blank" rel="external">http://httpbin.org/ip</a> 作为判断依据，如果返回的url与代理相同，则判定该IP可用。</p>
@@ -524,6 +524,22 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/symeonchen" target="_blank" title="Github">
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/symeonchen" target="_blank" title="知乎">
+                  
+                  知乎
+                </a>
+              </span>
+            
           
         </div>
 
